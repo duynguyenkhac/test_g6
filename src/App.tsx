@@ -4,6 +4,11 @@ import './App.css';
 import {Circle, createNodeFromReact, Group, Rect, Text} from "@antv/g6-react-node";
 import G6 from "@antv/g6";
 import {G6MiniDemo} from "./ReactNode/demo";
+import {TreeTasksContainer} from "./ReactNode/TreeTasksContainer";
+import {mockData} from "./mock/test.mock";
+import {ModelConfig} from "@antv/g6-core";
+import {Tasks} from "./types";
+import {TextStyle} from "@antv/g6-react-node/src/ReactNode/Shape/Text";
 
 type TagProps = {
     text: string,
@@ -14,7 +19,7 @@ const Tag = ({text, color}: TagProps) => (
     <Rect
         style={{
             fill: color,
-            padding: [5, 10],
+            padding: [4, 8],
             width: 'auto',
             radius: [4],
             margin: [0, 8],
@@ -24,77 +29,204 @@ const Tag = ({text, color}: TagProps) => (
     </Rect>
 );
 
-const Card = () => {
+type CardProps = {
+    cfg: Tasks
+}
+const Card = ({cfg}: CardProps) => {
+    console.log(cfg);
     return (
         <Group>
             <Rect
                 style={{
-                    width: 400,
+                    width: 220,
                     height: 'auto',
                     fill: '#fff',
-                    stroke: '#ddd',
+                    stroke: '#ccc',
                     shadowColor: '#eee',
-                    shadowBlur: 30,
-                    radius: [8],
-                    justifyContent: 'center',
-                    padding: [18, 0],
+                    shadowBlur: 10,
+                    radius: [4],
                 }}
-                draggable
             >
+                {/*{*/}
+                {/*    wrapText(cfg.operatingUnitName).map(value => {*/}
+
+                {/*        return <Text*/}
+                {/*            style={{*/}
+                {/*                maxWidth: 100,*/}
+                {/*                fill: '#000',*/}
+                {/*                margin: [0, 4],*/}
+                {/*                fontSize: 10,*/}
+                {/*            }}*/}
+                {/*        >*/}
+                {/*            {cfg.operatingUnitName}*/}
+                {/*        </Text>*/}
+                {/*    })*/}
+                {/*}*/}
                 <Text
                     style={{
+                        maxWidth: 100,
                         fill: '#000',
-                        margin: [0, 24],
-                        fontSize: 16,
-                        fontWeight: 'bold',
+                        margin: [5, 5],
+                        fontSize: 11,
+                        fontWeight: 'bold'
                     }}
                 >
-                    这是一个卡片
+                    {cfg.operatingUnitName}
                 </Text>
-                <Text style={{fill: '#ccc', fontSize: 12, margin: [12, 24]}}>
-                    我是一段特别特别特别特别特别特别特别长的描述
-                </Text>
-                <Rect style={{width: 'auto', flexDirection: 'row', padding: [4, 12]}}>
-                    <Tag color="#66ccff" text="我是"/>
-                    <Tag color="#66ccff" text="很多个"/>
-                    <Tag color="#66ccff" text="很多个的"/>
-                    <Tag color="#66ccff" text="标签"/>
+                <Rect style={{width: 'auto', flexDirection: 'row', justifyContent: 'space-between', margin: [5, 10]}}>
+                    <Rect style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <Text style={{fill: '#000', fontSize: 10}}>Tổng</Text>
+                        <Tag color="#66ccff" text={cfg.finCount.toString()}/>
+                    </Rect>
+                    <Rect style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <Text style={{fill: '#000', fontSize: 10}}>Đúng</Text>
+                        <Tag color="#10ab17" text={cfg.onScheduleFinCount.toString()}/>
+                    </Rect>
+                    <Rect style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <Text style={{fill: '#000', fontSize: 10}}>Trễ</Text>
+                        <Tag color="#dc2c2c" text={cfg.behindScheduleFinCount.toString()}/>
+                    </Rect>
+                    <Rect style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <Text style={{fill: '#000', fontSize: 10}}>Hoàn thành</Text>
+                        <Tag color="#0a67b3" text={cfg.completeFinCount.toString()}/>
+                    </Rect>
                 </Rect>
-                <Circle
+                <Rect
                     style={{
-                        x: 380,
-                        y: 20,
-                        r: 5,
-                        fill: 'red',
-                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        width: 'auto',
+                        height: 20,
+                        fill: "#fff",
+                        stroke: '#ccc',
+                        strokeOpacity: 0.3,
                     }}
-                />
+                >
+                    <Rect
+                        style={{
+                            width: cfg.planPercentComplete * 220 / 100,
+                            height: 20,
+                            fill: '#72de2d',
+                            fillOpacity: 0.5,
+                            strokeOpacity: 0,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Text
+                            style={{
+                                width: 'auto',
+                                fill: "#000",
+                                fontSize: 10,
+                                padding: [0, 0, 0, 10]
+                            }}
+                        >
+                            {`% Kế hoạch: ${cfg.planPercentComplete}`}
+                        </Text>
+                    </Rect>
+                </Rect>
+
+                <Rect
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        width: 'auto',
+                        height: 20,
+                        fill: "#fff",
+                        stroke: '#ccc',
+                        strokeOpacity: 0.3,
+                        radius: [0, 0, 4, 4,],
+                    }}
+                >
+                    <Rect
+                        style={{
+                            width: cfg.realPercentComplete * 220 / 100,
+                            height: 20,
+                            fill: '#0a67b3',
+                            fillOpacity: 0.7,
+                            strokeOpacity: 0,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            radius: [0, 0, 0, 4],
+                        }}
+                    >
+                        <Text
+                            style={{
+                                flexDirection: 'row',
+                                width: 'auto',
+                                justifyContent: 'center',
+                                fill: "#000",
+                                fontSize: 10,
+                            }}
+                        >
+                            {`% Hoàn thành: ${cfg.realPercentComplete}`}
+                        </Text>
+                    </Rect>
+                </Rect>
             </Rect>
         </Group>
     );
 };
 
-function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
-        </div>
-    );
+
+// @ts-ignore
+G6.registerNode('tasks', createNodeFromReact(Card));
+
+G6.registerEdge('hvh', {
+    // @ts-ignore
+    draw(cfg, group) {
+        const startPoint = cfg?.startPoint;
+        const endPoint = cfg?.endPoint;
+
+        // @ts-ignore
+        const {style} = cfg;
+        // @ts-ignore
+        const shape = group?.addShape('path', {
+            attrs: {
+                stroke: style.stroke,
+                endArrow: style.endArrow,
+                path: [
+                    // @ts-ignore
+                    ['M', startPoint.x, startPoint.y],
+                    // @ts-ignore
+                    ['L', startPoint.x, (startPoint.y + endPoint.y) / 2],
+                    // @ts-ignore
+                    ['L', endPoint.x, (startPoint.y + endPoint.y) / 2],
+                    // @ts-ignore
+                    ['L', endPoint.x, endPoint.y],
+                ],
+            },
+        });
+
+        return shape;
+    },
+});
+
+export default () => <TreeTasksContainer nodeType="tasks" height={900} edgeType={''} nodes={mockData}/>;
+
+
+const wrapText = (text: string) => {
+    let idealSplit = 20,
+        maxSplit = 25,
+        lineCounter = 0,
+        lineIndex = 0,
+        lines = [""],
+        i = 0;
+    for (i = 0; i < text.length; i++) {
+        let ch = text[i];
+        if ((lineCounter >= idealSplit && ch === " ") || lineCounter >= maxSplit) {
+            ch = "";
+            lineCounter = -1;
+            lineIndex++;
+            lines.push("");
+        }
+        lines[lineIndex] += ch;
+        lineCounter++;
+    }
+
+    return lines;
 }
-
-G6.registerNode('test', createNodeFromReact(Card));
-
-export default () => <G6MiniDemo nodeType="test" count={20} height={600}/>;
