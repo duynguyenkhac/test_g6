@@ -1,8 +1,7 @@
-// @flow 
+// @flow
 import * as React from 'react';
-import {useEffect} from "react";
+import {useEffect} from 'react';
 import G6 from "@antv/g6";
-import {TreeGraphData} from "@antv/g6-core/lib/types";
 import {Tasks} from "../types";
 
 type Props = {
@@ -37,7 +36,7 @@ export const TreeTasksContainer = ({
             defaultEdge: {
                 type: "hvh",
                 style: {
-                    stroke: "#af3000"
+                    stroke: "#af3000",
                 }
             },
             layout: {
@@ -63,7 +62,7 @@ export const TreeTasksContainer = ({
         );
 
         return () => graph.destroy();
-    }, [height, nodes]);
+    }, [height, nodeType, nodes]);
 
 
     return <div id="container"/>;
