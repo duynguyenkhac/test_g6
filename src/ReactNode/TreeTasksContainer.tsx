@@ -37,13 +37,13 @@ export const TreeTasksContainer = ({
             defaultEdge: {
                 type: "hvh",
                 style: {
-                    stroke: "#CED4D9"
+                    stroke: "#af3000"
                 }
             },
             layout: {
                 type: "compactBox",
                 direction: "TB",
-                indent: 300,
+                indent: 500,
                 getWidth: () => {
                     return 200;
                 },
