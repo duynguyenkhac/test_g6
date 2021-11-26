@@ -57,7 +57,7 @@ export const mockData = {
             behindScheduleFinCount: 0,
             completeFinCount: 0,
             planPercentComplete: 1.39,
-            realPercentComplete: 0,
+            realPercentComplete: 0.4,
             progressStatus: 1
         },
         {
